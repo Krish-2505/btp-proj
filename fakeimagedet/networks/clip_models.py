@@ -1,4 +1,4 @@
-import clip 
+import networks.clip 
 from PIL import Image
 import torch.nn as nn
 import torch

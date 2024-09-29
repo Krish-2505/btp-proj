@@ -126,13 +126,26 @@ def main(
     # # val_sampler = DistributedSampler(val_data, shuffle=False)
     # # val_loader = DataLoader(val_data, batch_size=batch_size, sampler=val_sampler, num_workers=4)
     # val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
-
+    
+    HOME_DIR="/content/drive/MyDrive/diffusion_datasets_train/diffusion_datasets/"
+    home_dir=HOME_DIR
+    for i in os.listdir(home_dir):
+      subdir=home_dir+i
+      dirssub=os.listdir(subdir)[0]
+      if dirssub=="1_fake":
+        print("********************")
+        print("fake images of length",len(os.listdir(subdir+"/"+dirssub)),"from ",i)
+        print("********************")
+      else:
+        print("********************")
+        print("real images of length",len(os.listdir(subdir+"/"+dirssub)),"from ",i)
+        print("********************")
 
     # Load the dataset from directories 
-    train_data = datasets.ImageFolder(root='/home/users/chandler_doloriel/scratch/Datasets/CIFAKE/train', transform=train_transform)
+    train_data = datasets.ImageFolder(root=home_dir, transform=train_transform)
     train_sampler = DistributedSampler(train_data, shuffle=True, seed=seed)
     train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler, num_workers=4)
-    val_data = datasets.ImageFolder(root='/home/users/chandler_doloriel/scratch/Datasets/CIFAKE/test', transform=val_transform)
+    val_data = datasets.ImageFolder(root=home_dir, transform=val_transform)
     val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
 
 
@@ -234,7 +247,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Your model description here")
 
-    parser.add_argument('--local_rank', type=int, default=0, help='Local rank for distributed training')
+    parser.add_argument('--local-rank', type=int, default=0, help='Local rank for distributed training')
     parser.add_argument('--num_epochs', type=int, default=2, help='Number of epochs training')
     parser.add_argument(
         '--model_name',
