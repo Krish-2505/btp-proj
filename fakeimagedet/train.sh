@@ -19,6 +19,7 @@ BATCH_SIZE=128
 WANDB_ID="2w0btkas"
 RESUME="from_last" # from_last or from_best
 learning_rate=0.0002
+WANDB_ONLINE=true
 
 
 # Set the CUDA_VISIBLE_DEVICES environment variable to use GPUs
@@ -29,6 +30,8 @@ pip install wandb --quiet
 pip install timm --quiet
 pip install ftfy --quiet
 pip install torchsummary --quiet
+
+wandb login
 # Run the distributed training command
 python -m torch.distributed.launch --nproc_per_node=$NUM_GPU btp-proj/fakeimagedet/train.py \
   -- \
@@ -46,5 +49,5 @@ python -m torch.distributed.launch --nproc_per_node=$NUM_GPU btp-proj/fakeimaged
   # --debug \
   # --resume_train $RESUME \
   # --debug \
-  # --wandb_online \
+  --wandb_online WANDB_ONLINE\
   # --wandb_run_id $WANDB_ID \
