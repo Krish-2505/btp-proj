@@ -28,6 +28,7 @@ echo "Using $NUM_GPU GPUs with IDs: $GPUs"
 pip install wandb --quiet
 pip install timm --quiet
 pip install ftfy --quiet
+pip install torchsummary --quiet
 # Run the distributed training command
 python -m torch.distributed.launch --nproc_per_node=$NUM_GPU btp-proj/fakeimagedet/train.py \
   -- \

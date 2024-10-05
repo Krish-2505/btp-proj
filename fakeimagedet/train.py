@@ -11,11 +11,11 @@ import argparse
 import wandb
 import torchvision.models as vis_models
 import re
-
+from torchsummary import summary
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data.distributed import DistributedSampler
-
+from torch.utils.tensorboard import SummaryWriter
 from dataset import ForenSynths
 # from extract_features import *
 from augment import ImageAugmentor
@@ -147,7 +147,13 @@ def main(
     train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler, num_workers=4)
     val_data = datasets.ImageFolder(root=home_dir, transform=val_transform)
     val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
+    print(f"Length of dataset: {len(train_loader.dataset)}")
 
+    # 2. Get the shape of the first batch (size of each object in the dataloader)
+    # Iterate over the dataloader to get a batch
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        print(f"Batch {batch_idx+1}: Data shape: {data.shape}, Labels shape: {labels.shape}")
+        break  
 
     # Creating and training the binary classifier
     if model_name == 'RN50':
@@ -166,7 +172,19 @@ def main(
         model = CLIPModel(clip_model_name, num_classes=1, clip_grad=args.clip_grad)
     else:
         raise ValueError(f"Model {model_name} not recognized!")
+    # print(model)
+    for name, param in model.named_parameters():
+      print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]}")
+      break
+    # summary(model, input_size=(3,224,224))
+    writer = SummaryWriter()
 
+    # Dummy input tensor for logging the model (for ResNet-50, typically (3, 224, 224))
+    dummy_input = torch.randn(1, 3, 224, 224)  # Batch size of 1, 3 channels (RGB), 224x224 image size
+
+    # Log the model graph
+    writer.add_graph(model, dummy_input)
+    writer.close()
     model = model.to(device)
     model = DistributedDataParallel(model)
     # model = DistributedDataParallel(model, find_unused_parameters=True)
