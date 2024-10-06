@@ -23,7 +23,7 @@ from mask import *
 from earlystop import EarlyStopping
 from utils import *
 from networks.resnet import resnet50
-from networks.resnet_mod import resnet50 as _resnet50, ChannelLinear
+from networks.resnet_mod import resnet50 as _resnet50, ChannelLinear, ComplexFCBlock
 
 from networks.clip_models import CLIPModel
 import os
@@ -160,7 +160,7 @@ def main(
         # model = vis_models.resnet50(pretrained=pretrained)
         # model.fc = nn.Linear(model.fc.in_features, 1)
         model = resnet50(pretrained=pretrained)
-        model.fc = nn.Linear(model.fc.in_features, 1)
+        model.fc = ComplexFCBlock(model.fc.in_features)
     elif model_name == 'RN50_mod':
         model = _resnet50(pretrained=pretrained, stride0=1)
         model.fc = ChannelLinear(model.fc.in_features, 1)
