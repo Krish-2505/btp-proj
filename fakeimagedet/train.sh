@@ -17,7 +17,7 @@ BAND="all" # all, low, mid, high
 RATIO=15
 BATCH_SIZE=128
 WANDB_ID="2w0btkas"
-RESUME="from_last" # from_last or from_best
+RESUME="from_best" # from_last or from_best
 learning_rate=0.0002
 WANDB_ONLINE=true
 
