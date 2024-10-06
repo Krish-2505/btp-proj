@@ -49,9 +49,9 @@ def main(
     save_path=None,
     mask_type=None,
     pretrained=False,
-    resume_train=None,
+    resume_train="from_last",
     early_stop=True,
-    wandb_online=False,
+    wandb_online=True,
     args=None,
     ):
 
@@ -128,9 +128,13 @@ def main(
     # val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
     
     HOME_DIR="/content/drive/MyDrive/diffusion_datasets_train/diffusion_datasets/"
+    test_dir="/content/drive/MyDrive/diffusion_datasets_train/val/"
     home_dir=HOME_DIR
     for i in os.listdir(home_dir):
       subdir=home_dir+i
+      if len(os.listdir(subdir))==0:
+        os.rmdir(subdir)
+        continue
       dirssub=os.listdir(subdir)[0]
       if dirssub=="1_fake":
         print("********************")
@@ -145,7 +149,7 @@ def main(
     train_data = datasets.ImageFolder(root=home_dir, transform=train_transform)
     train_sampler = DistributedSampler(train_data, shuffle=True, seed=seed)
     train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler, num_workers=4)
-    val_data = datasets.ImageFolder(root=home_dir, transform=val_transform)
+    val_data = datasets.ImageFolder(root=test_dir, transform=val_transform)
     val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
     print(f"Length of dataset: {len(train_loader.dataset)}")
 
@@ -416,7 +420,7 @@ if __name__ == "__main__":
         pretrained=args.pretrained,
         resume_train=args.resume_train,
         early_stop=args.early_stop,
-        wandb_online=args.wandb_online,
+        wandb_online=True,
         args=args
     )
 
