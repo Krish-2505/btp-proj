@@ -50,21 +50,47 @@ class ComplexFCBlock(nn.Module):
     def __init__(self, in_features):
         super(ComplexFCBlock, self).__init__()
         
+        # First fully connected layer
         self.fc1 = nn.Linear(in_features, 1024)
         self.bn1 = nn.BatchNorm1d(1024)
-        self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.4)
-        self.fc4 = nn.Linear(1024, 1)
+        self.leaky_relu = nn.LeakyReLU(0.2)
+        self.dropout1 = nn.Dropout(p=0.4)
+        
+        # Second fully connected layer (added for complexity)
+        self.fc2 = nn.Linear(1024, 512)
+        self.bn2 = nn.BatchNorm1d(512)
+        self.dropout2 = nn.Dropout(p=0.3)
+        
+        # Third fully connected layer with residual connection
+        self.fc3 = nn.Linear(512, 256)
+        self.bn3 = nn.BatchNorm1d(256)
+        self.fc_residual = nn.Linear(in_features, 256)  # Residual connection
+
+        self.dropout3 = nn.Dropout(p=0.2)
+        self.fc4 = nn.Linear(256, 1)
     
     def forward(self, x):
+        x_residual = self.fc_residual(x)  # Residual connection
+        
         x = self.fc1(x)
         x = self.bn1(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-        x = self.fc4(x)
+        x = self.leaky_relu(x)
+        x = self.dropout1(x)
         
+        x = self.fc2(x)
+        x = self.bn2(x)
+        x = self.leaky_relu(x)
+        x = self.dropout2(x)
+        
+        x = self.fc3(x)
+        x = self.bn3(x)
+        x = self.leaky_relu(x)
+        x += x_residual  # Adding residual connection
+        x = self.dropout3(x)
+        
+        x = self.fc4(x)
         return x
-    
+
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False)
