@@ -127,8 +127,8 @@ def main(
     # # val_loader = DataLoader(val_data, batch_size=batch_size, sampler=val_sampler, num_workers=4)
     # val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
     
-    HOME_DIR="/content/drive/MyDrive/3/train"
-    test_dir="/content/drive/MyDrive/3/test"
+    HOME_DIR="/content/drive/MyDrive/3/train/"
+    test_dir="/content/drive/MyDrive/3/test/"
     home_dir=HOME_DIR
     # for i in os.listdir(home_dir):
     #   subdir=home_dir+i
