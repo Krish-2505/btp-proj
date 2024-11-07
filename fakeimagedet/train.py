@@ -164,7 +164,7 @@ def main(
         # model = vis_models.resnet50(pretrained=pretrained)
         # model.fc = nn.Linear(model.fc.in_features, 1)
         model = resnet50(pretrained=pretrained)
-        model.fc = ComplexFCBlock(model.fc.in_features)
+        model.fc = nn.Linear(model.fc.in_features, 1)
     elif model_name == 'RN50_mod':
         model = _resnet50(pretrained=pretrained, stride0=1)
         model.fc = ChannelLinear(model.fc.in_features, 1)
