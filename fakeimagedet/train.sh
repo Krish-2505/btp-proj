@@ -18,7 +18,7 @@ RATIO=15
 BATCH_SIZE=128
 WANDB_ID="2w0btkas"
 RESUME="from_best" # from_last or from_best
-learning_rate=0.0002
+learning_rate=0.0001
 WANDB_ONLINE=true
 
 
