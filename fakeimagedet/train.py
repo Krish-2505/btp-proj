@@ -127,23 +127,23 @@ def main(
     # # val_loader = DataLoader(val_data, batch_size=batch_size, sampler=val_sampler, num_workers=4)
     # val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=4)
     
-    HOME_DIR="/content/drive/MyDrive/diffusion_datasets_train/diffusion_datasets/"
-    test_dir="/content/drive/MyDrive/diffusion_datasets_train/val/"
+    HOME_DIR="/content/drive/MyDrive/3/train"
+    test_dir="/content/drive/MyDrive/3/test"
     home_dir=HOME_DIR
-    for i in os.listdir(home_dir):
-      subdir=home_dir+i
-      if len(os.listdir(subdir))==0:
-        os.rmdir(subdir)
-        continue
-      dirssub=os.listdir(subdir)[0]
-      if dirssub=="1_fake":
-        print("********************")
-        print("fake images of length",len(os.listdir(subdir+"/"+dirssub)),"from ",i)
-        print("********************")
-      else:
-        print("********************")
-        print("real images of length",len(os.listdir(subdir+"/"+dirssub)),"from ",i)
-        print("********************")
+    # for i in os.listdir(home_dir):
+    #   subdir=home_dir+i
+    #   if len(os.listdir(subdir))==0:
+    #     os.rmdir(subdir)
+    #     continue
+    #   dirssub=os.listdir(subdir)[0]
+    #   if dirssub=="1_fake":
+    #     print("********************")
+    #     print("fake images of length",len(os.listdir(subdir+"/"+dirssub)),"from ",i)
+    #     print("********************")
+    #   else:
+    #     print("********************")
+    #     print("real images of length",len(os.listdir(subdir+"/"+dirssub)),"from ",i)
+    #     print("********************")
 
     # Load the dataset from directories 
     train_data = datasets.ImageFolder(root=home_dir, transform=train_transform)
