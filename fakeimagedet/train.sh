@@ -33,7 +33,7 @@ pip install torchsummary --quiet
 
 wandb login
 # Run the distributed training command
-python -m torch.distributed.launch --nproc_per_node=$NUM_GPU btp-proj/fakeimagedet/train.py \
+python -m torch.distributed.launch --nproc_per_node=$NUM_GPU /kaggle/working/FakeImageDetection/train.py \
   -- \
   --num_epochs $NUM_EPOCHS \
   --project_name $PROJECT_NAME \
@@ -51,3 +51,6 @@ python -m torch.distributed.launch --nproc_per_node=$NUM_GPU btp-proj/fakeimaged
   # --debug \
   --wandb_online WANDB_ONLINE\
   # --wandb_run_id $WANDB_ID \
+
+
+  #C:\Users\krish\Desktop\proj\btp\fakeimagedet\networks\resnet_mod.py

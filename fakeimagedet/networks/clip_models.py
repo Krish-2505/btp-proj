@@ -20,7 +20,7 @@ class CLIPModel(nn.Module):
 
     def forward(self, x, return_feature=False, return_all=False):
         encoded = self.model.encode_image(x)  # Always encode the image
-        print(encoded)
+        # print(encoded)
         if return_feature:
             return encoded  # Just return features if requested
         elif return_all:
